@@ -84,7 +84,7 @@
                             Wir leben in einer verteilten Welt! => C10k;
                             C10k + Skalierbarkeit => Synchronisationsaufwand;
                             Lösung für C10k + Skalierbarkeit => Asynchrone Programmierung;
-                            Vert.X bietet auch weiche Echtzeit
+                            Vert.X bietet zusätzlich weiche Echtzeit
                         </aside>
                     </script>
                 </section>
@@ -118,7 +118,8 @@
                         <aside class="notes">
                             Theoretisch alle JVM-fähigen Sprachen;
                             Über Vert.X-Module;
-                            ABER: z.B. Jython aktuell Version 2.5
+                            ABER: z.B. Jython aktuell Version 2.5;
+                            Hier nur Java
                         </aside>
                     </script>
                 </section>
@@ -134,9 +135,9 @@
                         - Absichtliches warten (```Thread.sleep()```, etc.)
 
                         <aside class="notes">
-                            Ziel:
-                            Prozessor schnell für nächste Aufgabe freigeben.
-                            Kleine, schnell erledigbare Funktionsblöcke => Micro Services
+                            Ziel: Prozessor schnell für nächste Aufgabe freigeben;
+                            Kleine, schnell erledigbare Funktionsblöcke;
+                            Tendenz: Micro Services
                         </aside>
                     </script>
                 </section>
@@ -161,9 +162,9 @@
                         ```
 
                         <aside class="notes">
-                            Am Beispiel HTTP, weil wir modern und Web-Orientiert sind ;-)
-                            *Eine* klassische Lösung: Auslagern blockierenden Codes in separaten Thread
-                            Hab ich bei dem Wort "Synchronisierung" jemanden im Publikum stöhnen gehört?
+                            Am Beispiel HTTP, weil wir modern und Web-Orientiert sind;
+                            *Eine* Lösung: Auslagern blockierenden Codes in separaten Thread;
+                            Synchronisation macht keinen Spaß
                         </aside>
                     </script>
                 </section>
@@ -181,7 +182,7 @@
                         ```
 
                         <aside class="notes">
-                            Lösung: Blockierende Aufrufe werden in nicht-blockierende überführt.
+                            Lösung: Blockierende Aufrufe werden in asynchrone überführt.
                         </aside>
                     </script>
                 </section>
@@ -190,7 +191,7 @@
                     <script type="text/template">
                         # ... und dann?
 
-                        - Anfrage wird asynchron abgesetzt
+                        - Anfrage wird *asynchron* abgesetzt
                         - Programmfluss wird fortgesetzt
                         - Fertigstellung erzeugt ein Ereignis
                     </script>
@@ -208,44 +209,43 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Aktorenmodell
+                        # Exkurs: Aktorenmodell
 
                         - Aktoren sind nebenläufige Einheiten
                         - Kommunikation ausschließlich über Nachrichten
                         - Nachrichtenaustausch erfolgt asynchron
 
                         <aside class="notes">
-                            Analog: E-Mail / Snail-Mail
-                            Idee: Nebenläufigkeit, ohne geteilte Ressourcen (Shared Memory, o.ä.)
-                            Asynchron heißt, keine inhärente Lesebestätigung
+                            Analog: E-Mail;
+                            Idee: Nebenläufigkeit, ohne geteilte Ressourcen (Shared Memory, o.ä.);
+                            Nachrichten werden immer kopiert!
+                            Keine inhärente Lesebestätigung
                         </aside>
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Empfänger-Adressierung
+                        # Empfänger bereitstellen
 
                         - Generischer Terminus: Callbacks
                         - In JavaScript: Callback-Funktionen
                         - In Vert.x: Handler-Objekte (```interface Handler<T>```)
 
                         <aside class="notes">
-                            Die JS-ler habens gewusst...
-                            Empfänger wird einfach als Parameter übergeben
+                            Empfänger als Parameter für asynchronen Aufruf
                         </aside>
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 1. "Rückgabewerte" als Nachrichten
+                        # 1. Rückgabewerte über Nachrichten
 
-                        Nachrichtenversand seitens des Frameworks
+                        Nachrichten bzw. Ereignisse seitens des Frameworks
 
                         <aside class="notes">
-                            Die JS-ler habens gewusst...
-                            Bei Methodenaufruf wird der Empfänger mit übergeben
+                            Erstes Nutzungsszenario: API-Funktionalität
                         </aside>
                     </script>
                 </section>
@@ -265,8 +265,8 @@
                         ```
 
                         <aside class="notes">
-                            Parameter 1 und 2 klar.
-                            Asynchroner API-Aufruf nimmt zusätzlich Handler entgegen.
+                            Parameter 1 und 2 klar;
+                            Asynchroner API-Aufruf nimmt Handler entgegen;
                             Restlichen Prämissen bleiben (kein status code etc.)
                         </aside>
                     </script>
@@ -285,36 +285,36 @@
                         ```
 
                         <aside class="notes">
-                            Handler bekommt das Ergebnis übergeben.
+                            Handler bekommt Nachricht als Parameter für handle()
                         </aside>
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Zurück zum HTTP-Client (3)
-
-                        Striktes Single-Threading je Aktor!
+                        # Striktes Single-Threading je Aktor!
 
                         <aside class="notes">
-                            Nebenläufigkeit der Aktoren regelt das Framework;
+                            Nebenläufigkeit mehrerer Aktoren regelt Framework;
                             Jeder Aktor handelt, wann immer er kann = Eingehende Nachricht;
-                            "wann immer er kann" => blockierender Aufruf würde Framework-Dispatching blockieren
+                            Blockierender Aufruf würde andere Aktoren blockieren
                         </aside>
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 2. Event Bus
+                        # 2. Aktoren-Kommunikation über Nachrichten
+
+                        EventBus
 
                         - P2P-Nachrichtenvermisslungssystem für Aktoren
-                        - Multiple Vert.x-Knoten und Browser
                         - Folgt Publish-Subscribe-Ansatz
+                        - Multiple Vert.x-Knoten und Browser
 
                         <aside class="notes">
-                            Hier wird es für die JS-ler wieder interessant;
-                            Benutzt Hazlecast-Protokoll (z. B. auch Apache Cassandra);
+                            Zweites Nutzungsszenario: Aktoren untereinander;
+                            Hazlecast-Protokoll (z.B. Apache Cassandra);
                             SockJS für Browser
                         </aside>
                     </script>
@@ -333,6 +333,12 @@
 
                         vertx.eventBus().registerHandler("test.address", myHandler);
                         ```
+
+                        <aside class="notes">
+                            Verfahren analog zum Handler<HttpClientResponse>;
+                            Lauscht auf *alle* Nachrichten an gegebene Adresse
+                            Adresse frei wählbarer String
+                        </aside>
                     </script>
                 </section>
 
@@ -345,11 +351,11 @@
                         ```
 
                         - Veröffentlichen an alle Abonnenten
-                        - String, Boolean, ..., **JSON**
+                        - Primitive Datentypen: String, Boolean, ...
+                        - **JSON**
 
                         <aside class="notes">
-                            JSON für polyglottes Umfeld unschlagbar;
-                            Adresse ist frei wählbarer String
+                            JSON für polyglottes Umfeld unschlagbar
                         </aside>
                     </script>
                 </section>
@@ -363,7 +369,7 @@
                         ```
 
                         - Einzelner Empfänger
-                        - Mehrere Abonnenten: "non strict round-robin"
+                        - Bei mehreren Abonnenten "non strict round-robin"
 
                         <aside class="notes">
                             send() statt publish()
@@ -375,20 +381,24 @@
                     <script type="text/template">
                         # Verticle-Konzept
 
-                        Micro Service (respektive Aktor) heißt in Vert.x "Verticle"
+                        Micro Service bzw. Aktor heißt in Vert.x "Verticle"
 
                         ```java
                         public class MyVerticle extends Verticle {
                             @Override public void start(Future<Void> startFuture) {
-                                // Startup Logik, Handler registrieren, ...
-                                startFuture.setResult(null); // ggf. asynchron
+                                // Startup Logik,
+                                // Handler registrieren,
+                                // Nachrichten absetzen,
+                                // ...
+                                startFuture.setResult(null); // da evtl. asynchron
                             }
                         }
                         ```
 
                         <aside class="notes">
-                            Future (in JS Promise) ist ready-handler des Frameworks;
-                            Wenn startup-Logik async, muss auch das Future async aufgelöst werden;
+                            startFuture teilt Framework erfolgreichen Start mit;
+                            Future (in JS Promise) ist eine Art Handler;
+                            Da start() async reicht return nicht;
                             optional
                         </aside>
                     </script>
@@ -402,8 +412,9 @@
                         - Horizontale Skalierung: Mehr Computer
 
                         <aside class="notes">
-                            1 Thread der je ein Verticle durchlaufen kann je CPU-Kern;
-                            1..n Vert.X-Instanzen je Computer, geteilter EventBus
+                            max. 1 CPU-Kern je *aktives* Verticle;
+                            1..n Vert.X-Instanzen je Computer;
+                            Geteilter EventBus
                         </aside>
                     </script>
                 </section>
@@ -413,11 +424,12 @@
                         # Zustandslosigkeit (optional)
 
                         - Verticle sollte ohne *"Session"* arbeiten können
-                        - Beliebige Instanz kann Nachricht verarbeitet
+                        - Beliebige Instanz kann Nachricht erhalten
 
                         <aside class="notes">
-                            Zustandslosigkeit optional, sonst muss konkretes Verticle direkt adressiert werden;
-                            Load-Balancing von z.B. eventBus.send() in Round-Robin-Manier
+                            Deterministische Zustellung nicht garantiert z.B. eventBus.send() in Round-Robin-Manier
+                            Erlaubt Load-Balancing;
+                            optional, sonst eindeutige Adresse je Verticle;
                         </aside>
                     </script>
                 </section>
@@ -433,11 +445,11 @@
 
                         eb.onopen = function() {
 
-                            eb.registerHandler('some-address', function(message) {
+                            eb.registerHandler('test.address', function(message) {
                                 console.log('received: ' + JSON.stringify(message);
                             });
 
-                            eb.send('other-address', {name: 'tim', age: 587});
+                            eb.send('other.address', {name: 'The Doctor', age: 2000});
 
                         }
                         ```
@@ -448,8 +460,7 @@
                     <script type="text/template">
                         # Tests
 
-                        Asynchrone Ausführung erfordert asynchrone Werkzeuge
-
+                        Asynchrone Ausführung erfordert asynchrone Testwerkzeuge
                     </script>
                 </section>
 
@@ -462,8 +473,8 @@
                         - ```testComplete();``` nach Abschluss jedes Tests
 
                         <aside class="notes">
-                            Da wir in einer asynchronen Welt leben, kann der Test-Runner nicht wissen, wann er loslegen kann;
-                            ebenso kann er nicht wissen, wann noch asynchrone Operationen ausgeführt werden
+                            Da asynchron, kann Test-Runner nicht wissen, wann er loslegen kann;
+                            Ebenso kann er nicht wissen, wann noch asynchrone Testoperationen ausgeführt werden
                         </aside>
                     </script>
                 </section>
@@ -478,7 +489,7 @@ public class MyVerticleTest extends TestVerticle {
         container.deployVerticle(MyVerticle.class, dummyConfig,
                 new  Handler&lt;AsyncResult&lt;String&gt;&gt;() {
             public void handle(AsyncResult&lt;String&gt; asyncResult) {
-                assertTrue(asyncResult.succeeded());
+                VertxAssert.assertTrue(asyncResult.succeeded());
                 startTests();
             }
         });
@@ -487,7 +498,9 @@ public class MyVerticleTest extends TestVerticle {
     ...
                     </code></pre>
                     <aside class="notes">
-                        Hier ist asyncResult das Ergebnis des Future<Void> startFuture von eben;
+                        Verticle.start() vor **jedem** Test;
+                        asyncResult ist Ergebnis des Future startFuture von eben;
+                        VertxAssert da asynchrones assert(false) und testComplete beachtet werden müssen
                     </aside>
                 </section>
 
@@ -500,11 +513,20 @@ public class MyVerticleTest extends TestVerticle {
 
                             @Test public void somethingShouldBeRight() {
                                 // Testlogik
-                                testComplete();
+                                someActor.asyncCall(params, new Handler<T>() {
+                                    public void handle(T result) {
+                                        VertxAssert.assertTrue(result.someProperty == expectedValue) {
+                                        VertxAssert.testComplete();
+                                    }
+                                })
                             }
 
                         }
                         ```
+
+                        <aside class="notes">
+                            @Test wie in JUnit
+                        </aside>
                     </script>
                 </section>
 
@@ -512,19 +534,19 @@ public class MyVerticleTest extends TestVerticle {
                     <script type="text/template">
                         # Randnotizen
 
-                        - Simple asynchrone API
+                        - Schlanke API
                             - Verticle Deployment
                             - Logging
                             - Event Bus
-                            - TCP, UDP, HTTP(S), DNS, WebSocket (Client und Server)
-                            - File System
-                            - Für Java: JSON-API
-                        - Erweiterte Funktionalität durch Module
-                        - Maven Archetype erzeugt direkt polyglottes Projekt
+                            - File I/O, TCP, UDP, HTTP(S), DNS, WebSockets
+                            - Fluent JSON-API
+                        - Handler auch als Lambdas
+                        - Erweiterbar durch Module
+                        - Maven Archetype erzeugt polyglottes Projekt
 
                         <aside class="notes">
-                            Modulsystem ähnlich zu maven oder npm;
-                            Dort z.B. asynchrone Datenbank wrapper
+                            Modulsystem ähnlich maven oder npm;
+                            Dort z.B. auch asynchrone wrapper (z.B. für DB)
                         </aside>
                     </script>
                 </section>
@@ -537,13 +559,13 @@ public class MyVerticleTest extends TestVerticle {
                         - Mehr Module vom Core-Team
                             - Datenbanken
                             - Authorisierung
-                            - Reactive (RxJava, streams)
+                            - Reactive (RxJava, Streams)
                             - ...
                         - Typsichere EventBus-Nachrichten
                         - Docker-Basis-Images
-                        - Spezialisiertes Javadoc
-                        - Code-Generatoren
+                        - Spezialisierte Javadoc
                         - Transpiler
+                        - ...
                     </script>
                 </section>
 
