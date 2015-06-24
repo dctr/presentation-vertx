@@ -51,9 +51,9 @@
                     <img src="img/vertx-logo.png" alt="Vert.X Logo"/>
 
                     <aside class="notes">
-                        Hier potentiell Teil 1
-                        Wenn die Bewertungen gut ausfallen, gibt es evtl. einen Teil 2
-                        mit mehr technischen Details und asynchroner Programmierung
+                        Asynchrone, ereignisorientierte Programmierung am Beispiel von Vert.X;
+                        Potentieller Teil 1;
+                        Wenn Interesse Teil 2 mit mehr technischen Details
                     </aside>
                 </section>
 
@@ -66,7 +66,7 @@
                         EXTERNAL Christ David (INST-ICM/BSV-BS) &lt;external.david.christ@bosch-si.com&gt;, *G41/PJ-CP*
 
                         <aside class="notes">
-                            Kurze Werbepause.
+                            Zu Beginn eine Werbepause
                         </aside>
                     </script>
                 </section>
@@ -75,22 +75,23 @@
                     <script type="text/template">
                         # Motivation
 
-                        - C10k
+                        - C10k-Problem
                         - Horizontale und vertikale Skalierbarkeit
                         - (Weiche) Echtzeit-Anforderungen
 
                         <aside class="notes">
-                            Wir leben in einer verteilten Welt!
-                            Klassisches Programmiermodell mit C10k => Viel Threading;
-                            Aus Threading und Skalierung folgt Synchronisationsaufwand => Vert.X inhärent asynchron, also das Gegenteil von Synchronisierung;
-                            Echtzeit oft erwünscht, aber selten "hart"
+                            Warum asynchrone Programmierung?
+                            Wir leben in einer verteilten Welt! => C10k;
+                            C10k + Skalierbarkeit => Synchronisationsaufwand;
+                            Lösung für C10k + Skalierbarkeit => Asynchrone Programmierung;
+                            Vert.X bietet auch weiche Echtzeit
                         </aside>
                     </script>
                 </section>
 
                 <section data-markdown>
                     <script type="text/template">
-                        > Vert.x ist ein polyglotes, nicht-blockierendes, ereignisorientiertes Anwendungsframework, das in der Java&nbsp;Virtual&nbsp;Machine läuft.
+                        > Vert.x ist ein polyglottes, nicht-blockierendes, ereignisorientiertes Anwendungsframework, das in der Java&nbsp;Virtual&nbsp;Machine läuft.
 
                         <aside class="notes">
                             Was ist Vert.X?
@@ -102,7 +103,7 @@
                     <script type="text/template">
                         # Grundidee
 
-                        1. Polyglot
+                        1. Polyglott
                         2. Nicht-blockierend
                         3. Ereignisorientiert
                     </script>
@@ -110,7 +111,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## 1. Polyglot (JVM)
+                        # 1. Polyglott (JVM)
 
                         ![Vert.X Language Logos](img/poly-logos.png)
 
@@ -124,7 +125,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## 2. Nicht-blockierend
+                        # 2. Nicht-blockierend
 
                         **Verboten sind:**
 
@@ -142,7 +143,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### Klassischer, blockierender Ansatz
+                        # Klassischer, blockierender Ansatz
 
                         ```java
                         HttpClient client = new HttpClient();
@@ -169,7 +170,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### Nicht-blockierender Ansatz
+                        # Nicht-blockierender Ansatz
 
                         ```java
                         HttpClient client = vertx.createHttpClient();
@@ -187,7 +188,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### ... und dann?
+                        # ... und dann?
 
                         - Anfrage wird asynchron abgesetzt
                         - Programmfluss wird fortgesetzt
@@ -197,7 +198,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## 3. Ereignisorientiert
+                        # 3. Ereignisorientiert
 
                         <aside class="notes">
                             Letzter Punkt auf der Liste.
@@ -207,7 +208,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### Aktorenmodell
+                        # Aktorenmodell
 
                         - Aktoren sind nebenläufige Einheiten
                         - Kommunikation ausschließlich über Nachrichten
@@ -223,7 +224,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### Empfänger-Adressierung
+                        # Empfänger-Adressierung
 
                         - Generischer Terminus: Callbacks
                         - In JavaScript: Callback-Funktionen
@@ -238,7 +239,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### 1. "Rückgabewerte" als Nachrichten
+                        # 1. "Rückgabewerte" als Nachrichten
 
                         Nachrichtenversand seitens des Frameworks
 
@@ -251,7 +252,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        #### Zurück zum HTTP-Client (1)
+                        # Zurück zum HTTP-Client (1)
 
                         ```java
                         HttpClient client = vertx.createHttpClient();
@@ -273,7 +274,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        #### Zurück zum HTTP-Client (2)
+                        # Zurück zum HTTP-Client (2)
 
                         ```java
                         public class MyHandler implements Handler<HttpClientResponse> {
@@ -291,7 +292,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        #### Zurück zum HTTP-Client (3)
+                        # Zurück zum HTTP-Client (3)
 
                         Striktes Single-Threading je Aktor!
 
@@ -305,7 +306,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### 2. Event Bus
+                        # 2. Event Bus
 
                         - P2P-Nachrichtenvermisslungssystem für Aktoren
                         - Multiple Vert.x-Knoten und Browser
@@ -321,7 +322,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        #### Nachrichten empfangen
+                        # Nachrichten empfangen
 
                         ```java
                         Handler<Message> myHandler = new Handler<Message<String>>() {
@@ -337,7 +338,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        #### Nachrichten veröffentlichen
+                        # Nachrichten veröffentlichen
 
                         ```java
                         vertx.eventBus().publish("test.address", "Hello, world!");
@@ -347,7 +348,7 @@
                         - String, Boolean, ..., **JSON**
 
                         <aside class="notes">
-                            JSON für polyglotes Umfeld unschlagbar;
+                            JSON für polyglottes Umfeld unschlagbar;
                             Adresse ist frei wählbarer String
                         </aside>
                     </script>
@@ -355,7 +356,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        #### Nachrichten senden
+                        # Nachrichten senden
 
                         ```java
                         vertx.eventBus().send("test.address", "Hello, world!");
@@ -395,7 +396,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Skalierbarkeit
+                        # Skalierbarkeit
 
                         - Vertikale Skalierung: Mehr (gleiche) Verticles
                         - Horizontale Skalierung: Mehr Computer
@@ -409,7 +410,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Zustandslosigkeit (optional)
+                        # Zustandslosigkeit (optional)
 
                         - Verticle sollte ohne *"Session"* arbeiten können
                         - Beliebige Instanz kann Nachricht verarbeitet
@@ -423,7 +424,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Bonuslevel
+                        # Bonuslevel
 
                         Web-Anwendung === Verticle
 
@@ -454,7 +455,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        ## Asynchrones Testen
+                        # Asynchrones Testen
 
                         - In SetUp müssen Verticles geladen werden
                         - ```startTests();``` in SetUp startet Test-Suite
@@ -492,7 +493,7 @@ public class MyVerticleTest extends TestVerticle {
 
                 <section data-markdown>
                     <script type="text/template">
-                        ### Test
+                        # Test
 
                         ```java
                             ...
@@ -519,7 +520,7 @@ public class MyVerticleTest extends TestVerticle {
                             - File System
                             - Für Java: JSON-API
                         - Erweiterte Funktionalität durch Module
-                        - Maven Archetype erzeugt direkt polyglotes Projekt
+                        - Maven Archetype erzeugt direkt polyglottes Projekt
 
                         <aside class="notes">
                             Modulsystem ähnlich zu maven oder npm;
@@ -532,15 +533,16 @@ public class MyVerticleTest extends TestVerticle {
                     <script type="text/template">
                         # Ausblick
 
-                        - Aktuell Vert.x 3.0 Milestone 6
+                        - Aktuell Vert.X 3.0 Milestone 6
                         - Mehr Module vom Core-Team
                             - Datenbanken
                             - Authorisierung
                             - Reactive (RxJava, streams)
                             - ...
-                        - Docker
+                        - Typsichere EventBus-Nachrichten
+                        - Docker-Basis-Images
+                        - Spezialisiertes Javadoc
                         - Code-Generatoren
-                        - Spezialisierte API doc
                         - Transpiler
                     </script>
                 </section>
@@ -563,7 +565,7 @@ public class MyVerticleTest extends TestVerticle {
 			// Full list of configuration options available at:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
-				controls: true,
+				controls: false,
 				progress: true,
 				history: true,
 				center: true,
