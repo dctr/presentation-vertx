@@ -73,7 +73,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Motivation
+                        ## Motivation
 
                         - C10k-Problem
                         - Horizontale und vertikale Skalierbarkeit
@@ -101,7 +101,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Grundidee
+                        ## Grundidee
 
                         1. Polyglott
                         2. Nicht-blockierend
@@ -111,7 +111,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 1. Polyglott (JVM)
+                        ## 1. Polyglott (JVM)
 
                         ![Vert.X Language Logos](img/poly-logos.png)
 
@@ -126,7 +126,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 2. Nicht-blockierend
+                        ## 2. Nicht-blockierend
 
                         **Verboten sind:**
 
@@ -144,7 +144,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Klassischer, blockierender Ansatz
+                        ## Klassischer Ansatz
 
                         ```java
                         HttpClient client = new HttpClient();
@@ -171,7 +171,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Nicht-blockierender Ansatz
+                        ## Nicht-blockierender Ansatz
 
                         ```java
                         HttpClient client = vertx.createHttpClient();
@@ -189,7 +189,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # ... und dann?
+                        ## ... und dann?
 
                         - Anfrage wird *asynchron* abgesetzt
                         - Programmfluss wird fortgesetzt
@@ -199,7 +199,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 3. Ereignisorientiert
+                        ## 3. Ereignisorientiert
 
                         <aside class="notes">
                             Letzter Punkt auf der Liste.
@@ -209,7 +209,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Exkurs: Aktorenmodell
+                        ## Exkurs: Aktorenmodell
 
                         - Aktoren sind nebenläufige Einheiten
                         - Kommunikation ausschließlich über Nachrichten
@@ -226,7 +226,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Empfänger bereitstellen
+                        ## Empfänger bereitstellen
 
                         - Generischer Terminus: Callbacks
                         - In JavaScript: Callback-Funktionen
@@ -240,7 +240,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 1. Rückgabewerte über Nachrichten
+                        ## 1. Rückgabewerte
 
                         Nachrichten bzw. Ereignisse seitens des Frameworks
 
@@ -252,7 +252,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Zurück zum HTTP-Client (1)
+                        ## Zurück zum HTTP-Client (1)
 
                         ```java
                         HttpClient client = vertx.createHttpClient();
@@ -274,7 +274,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Zurück zum HTTP-Client (2)
+                        ## Zurück zum HTTP-Client (2)
 
                         ```java
                         public class MyHandler implements Handler<HttpClientResponse> {
@@ -292,9 +292,10 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Striktes Single-Threading je Aktor!
+                        ## Striktes Single-Threading!
 
                         <aside class="notes">
+                            Striktes Single-Threading je Aktor;
                             Nebenläufigkeit mehrerer Aktoren regelt Framework;
                             Jeder Aktor handelt, wann immer er kann = Eingehende Nachricht;
                             Blockierender Aufruf würde andere Aktoren blockieren
@@ -304,9 +305,9 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # 2. Aktoren-Kommunikation über Nachrichten
+                        ## 2. Aktoren-Kommunikation
 
-                        EventBus
+                        Nachrichte über den *EventBus*
 
                         - P2P-Nachrichtenvermisslungssystem für Aktoren
                         - Folgt Publish-Subscribe-Ansatz
@@ -322,7 +323,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Nachrichten empfangen
+                        ## Nachrichten empfangen
 
                         ```java
                         Handler<Message> myHandler = new Handler<Message<String>>() {
@@ -344,7 +345,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Nachrichten veröffentlichen
+                        ## Nachrichten veröffentlichen
 
                         ```java
                         vertx.eventBus().publish("test.address", "Hello, world!");
@@ -362,7 +363,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Nachrichten senden
+                        ## Nachrichten senden
 
                         ```java
                         vertx.eventBus().send("test.address", "Hello, world!");
@@ -379,7 +380,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Verticle-Konzept
+                        ## Verticle-Konzept
 
                         Micro Service bzw. Aktor heißt in Vert.x "Verticle"
 
@@ -406,7 +407,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Skalierbarkeit
+                        ## Skalierbarkeit
 
                         - Vertikale Skalierung: Mehr (gleiche) Verticles
                         - Horizontale Skalierung: Mehr Computer
@@ -421,7 +422,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Zustandslosigkeit (optional)
+                        ## Zustandslosigkeit (optional)
 
                         - Verticle sollte ohne *"Session"* arbeiten können
                         - Beliebige Instanz kann Nachricht erhalten
@@ -436,7 +437,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Bonuslevel
+                        ## Bonuslevel
 
                         Web-Anwendung === Verticle
 
@@ -458,7 +459,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Tests
+                        ## Tests
 
                         Asynchrone Ausführung erfordert asynchrone Testwerkzeuge
                     </script>
@@ -466,7 +467,7 @@
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Asynchrones Testen
+                        ## Asynchrones Testen
 
                         - In SetUp müssen Verticles geladen werden
                         - ```startTests();``` in SetUp startet Test-Suite
@@ -506,16 +507,15 @@ public class MyVerticleTest extends TestVerticle {
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Test
+                        ## Test
 
                         ```java
                             ...
 
                             @Test public void somethingShouldBeRight() {
-                                // Testlogik
                                 someActor.asyncCall(params, new Handler<T>() {
                                     public void handle(T result) {
-                                        VertxAssert.assertTrue(result.someProperty == expectedValue) {
+                                        VertxAssert.assertTrue(result.prop == expected) {
                                         VertxAssert.testComplete();
                                     }
                                 })
@@ -532,7 +532,7 @@ public class MyVerticleTest extends TestVerticle {
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Randnotizen
+                        ## Randnotizen
 
                         - Schlanke API
                             - Verticle Deployment
@@ -553,7 +553,7 @@ public class MyVerticleTest extends TestVerticle {
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Ausblick
+                        ## Ausblick
 
                         - Aktuell Vert.X 3.0 Milestone 6
                         - Mehr Module vom Core-Team
@@ -571,7 +571,7 @@ public class MyVerticleTest extends TestVerticle {
 
                 <section data-markdown>
                     <script type="text/template">
-                        # Fragen?
+                        ## Fragen?
                     </script>
                 </section>
 
