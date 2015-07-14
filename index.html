@@ -327,7 +327,8 @@
                         ```java
                         Handler<Message> myHandler = new Handler<Message<String>>() {
                             public void handle(Message<String> message) {
-                                System.out.println("I received a message: " + message.body);
+                                System.out.println("I received a message: " + message.body());
+                                message.reply("I heared you.");
                             }
                         };
 
@@ -336,8 +337,9 @@
 
                         <aside class="notes">
                             Verfahren analog zum Handler<HttpClientResponse>;
-                            Lauscht auf *alle* Nachrichten an gegebene Adresse
-                            Adresse frei wählbarer String
+                            Lauscht auf *alle* Nachrichten an gegebene Adresse;
+                            Adresse frei wählbarer String;
+                            Antworten möglich
                         </aside>
                     </script>
                 </section>
